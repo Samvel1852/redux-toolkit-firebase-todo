@@ -1,11 +1,21 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-
 import { Button, Container, Input, Typography } from "@mui/material";
-import { addTodo, deleteTodo, mainInputChange } from "./todoSlice";
+
+import {
+  addTodo,
+  deleteTodo,
+  firebaseTodos,
+  mainInputChange,
+} from "./todoSlice";
 
 export default function Todo() {
   const { todoList, currentValue } = useSelector((state) => state.todo);
+
+  useEffect(() => {
+    dispatch(firebaseTodos());
+    console.log("todoList", todoList);
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -14,7 +24,7 @@ export default function Todo() {
   };
 
   const handleAddTodo = () => {
-    dispatch(addTodo({ title: currentValue, id: todoList.length + 1 }));
+    dispatch(addTodo({ title: currentValue }));
   };
 
   const handleDeleteTodo = (id) => {

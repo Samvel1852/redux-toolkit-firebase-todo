@@ -1,0 +1,9 @@
+{
+  "rules": {
+    "todos": {
+      ".indexOn": ["todos"]
+    },
+    ".read": true,
+    ".write": true
+  }
+}
