@@ -4,12 +4,18 @@ export function addTodoToFirebase(title) {
   db.ref("/todos/").push({
     title,
     completed: false,
-    isEdit: false,
+    editable: false,
   });
 }
 
 export function deleteTodoFromFirebase(id) {
   db.ref("/todos/" + id).remove();
+}
+
+export function editTodoFromFirebase(id) {
+  const todoRef = db.ref("/todos/" + id);
+
+  todoRef.update({ editable: true });
 }
 
 export function getTodos() {

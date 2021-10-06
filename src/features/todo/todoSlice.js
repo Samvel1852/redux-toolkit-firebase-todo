@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addTodoToFirebase,
   deleteTodoFromFirebase,
+  editTodoFromFirebase,
   getTodos,
 } from "../../services/firebaseServices";
 
@@ -39,18 +40,28 @@ export const todoSlice = createSlice({
       deleteTodoFromFirebase(action.payload);
       state.todoList.splice(index, 1);
     },
+
+    editTodo: (state, action) => {
+      const index = state.todoList.findIndex(
+        (todo) => todo.id === action.payload
+      );
+      const changedTodo = { ...state.todolist, title: state.currentValue };
+      editTodoFromFirebase(action.payload);
+      state.todoList.splice(index, 1, changedTodo);
+    },
   },
 
   extraReducers: (builder) => {
     // Add reducers for additional action types here, and handle loading state as needed
     builder.addCase(firebaseTodos.fulfilled, (state, action) => {
       // Add user to the state array
-      console.log("action.payload", action.payload);
+      // console.log("action.payload", action.payload);
       state.todoList.push(...action.payload.reverse());
     });
   },
 });
 
-export const { addTodo, mainInputChange, deleteTodo } = todoSlice.actions;
+export const { addTodo, mainInputChange, deleteTodo, editTodo } =
+  todoSlice.actions;
 
 export default todoSlice.reducer;

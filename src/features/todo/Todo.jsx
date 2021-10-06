@@ -7,17 +7,17 @@ import {
   deleteTodo,
   firebaseTodos,
   mainInputChange,
+  editTodo,
 } from "./todoSlice";
 
 export default function Todo() {
   const { todoList, currentValue } = useSelector((state) => state.todo);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(firebaseTodos());
-    console.log("todoList", todoList);
   }, []);
-
-  const dispatch = useDispatch();
 
   const handleMainInputChange = (e) => {
     dispatch(mainInputChange(e.target.value));
@@ -29,6 +29,10 @@ export default function Todo() {
 
   const handleDeleteTodo = (id) => {
     dispatch(deleteTodo(id));
+  };
+
+  const handleEditTodo = (id) => {
+    dispatch(editTodo(id));
   };
 
   return (
@@ -45,8 +49,13 @@ export default function Todo() {
       {todoList.map((todo) => {
         return (
           <Container sx={{ m: 1 }} key={Math.random()}>
-            <Input value={todo.title} readOnly={true} />
-            <Button sx={{ m: 1 }} variant="contained" color="warning">
+            <Input value={todo.title} readOnly={todo.editable} />
+            <Button
+              onClick={() => handleEditTodo(todo.id)}
+              sx={{ m: 1 }}
+              variant="contained"
+              color="warning"
+            >
               Edit
             </Button>
             <Button
