@@ -5,6 +5,7 @@ import {
   deleteTodoFromFirebase,
   editTodoFromFirebase,
   getTodos,
+  saveEditedTodoInFirebase,
 } from "../../services/firebaseServices";
 
 export const firebaseTodos = createAsyncThunk(
@@ -17,6 +18,8 @@ export const firebaseTodos = createAsyncThunk(
 
 const initialState = {
   currentValue: "",
+  editInputValue: "",
+  todoEditable: false,
   todoList: [],
 };
 
@@ -26,6 +29,10 @@ export const todoSlice = createSlice({
   reducers: {
     mainInputChange: (state, action) => {
       state.currentValue = action.payload;
+    },
+
+    eachInputChange: (state, action) => {
+      state.editInputValue = action.payload;
     },
 
     addTodo: (state, action) => {
@@ -45,9 +52,30 @@ export const todoSlice = createSlice({
       const index = state.todoList.findIndex(
         (todo) => todo.id === action.payload
       );
-      const changedTodo = { ...state.todolist, title: state.currentValue };
+      state.editInputValue = state.todoList[index].title;
+      const changedTodo = {
+        ...state.todoList[index],
+        title: state.editInputValue,
+        editable: true,
+      };
       editTodoFromFirebase(action.payload);
       state.todoList.splice(index, 1, changedTodo);
+      state.todoEditable = true;
+    },
+
+    saveTodo: (state, action) => {
+      const index = state.todoList.findIndex(
+        (todo) => todo.id === action.payload.id
+      );
+
+      const editedTodo = {
+        ...state.todoList[index],
+        title: state.editInputValue,
+        editable: false,
+      };
+
+      saveEditedTodoInFirebase(action.payload.id, action.payload.title);
+      state.todoList.splice(index, 1, editedTodo);
     },
   },
 
@@ -61,7 +89,13 @@ export const todoSlice = createSlice({
   },
 });
 
-export const { addTodo, mainInputChange, deleteTodo, editTodo } =
-  todoSlice.actions;
+export const {
+  addTodo,
+  mainInputChange,
+  deleteTodo,
+  editTodo,
+  eachInputChange,
+  saveTodo,
+} = todoSlice.actions;
 
 export default todoSlice.reducer;

@@ -18,6 +18,10 @@ export function editTodoFromFirebase(id) {
   todoRef.update({ editable: true });
 }
 
+export function saveEditedTodoInFirebase(id, title) {
+  db.ref("/todos/").child(id).update({ editable: false, title });
+}
+
 export function getTodos() {
   const listTodos = [];
   return new Promise((resolve) => {
@@ -27,7 +31,7 @@ export function getTodos() {
           completed: el.val().completed,
           title: el.val().title,
           id: el.key,
-          isEdit: el.val().isEdit,
+          editable: el.val().editable,
         });
       });
       resolve(listTodos);
