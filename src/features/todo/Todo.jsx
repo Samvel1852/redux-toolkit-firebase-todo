@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { Button, Container, Input, Typography } from "@mui/material";
@@ -16,8 +16,6 @@ import {
 import { ROUTES } from "../../constants/routes";
 
 export default function Todo() {
-  // const [todoEditable, setTodoEditable] = useState(false);
-
   const { todoList, currentValue, editInputValue } = useSelector(
     (state) => state.todo
   );
@@ -26,7 +24,7 @@ export default function Todo() {
 
   useEffect(() => {
     if (!todoList.length) dispatch(firebaseTodos());
-  }, []);
+  }, [dispatch, todoList.length]);
 
   const handleMainInputChange = (e) => {
     dispatch(mainInputChange(e.target.value));

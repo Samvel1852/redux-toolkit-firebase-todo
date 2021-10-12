@@ -38,3 +38,10 @@ export function getTodos() {
     });
   });
 }
+
+export function addUserToFirebase({ userName, password }) {
+  db.ref("/users/").push({
+    userName,
+    password,
+  });
+}

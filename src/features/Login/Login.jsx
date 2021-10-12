@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { Button, Container, TextField } from "@mui/material";
+import { Button, Container, TextField, Typography } from "@mui/material";
 
 import { ROUTES } from "../../constants/routes";
 
@@ -37,6 +37,9 @@ export default function Login() {
           >
             Log In
           </Button>
+        </Link>
+        <Link to={ROUTES.signUp}>
+          <Typography>Don't have account? Sign up</Typography>
         </Link>
       </Container>
     </>

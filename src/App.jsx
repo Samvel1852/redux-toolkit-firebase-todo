@@ -5,6 +5,7 @@ import "./App.css";
 import { ROUTES } from "./constants/routes";
 import Login from "./features/Login/Login";
 import Todo from "./features/todo/Todo";
+import SignUp from "./features/SignUp/SignUp";
 
 function App() {
   return (
@@ -19,6 +20,9 @@ function App() {
           </Route>
           <Route path={ROUTES.login}>
             <Login />
+          </Route>
+          <Route path={ROUTES.signUp}>
+            <SignUp />
           </Route>
         </Switch>
       </Router>
