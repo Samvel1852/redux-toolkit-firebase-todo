@@ -1,4 +1,6 @@
+import { useHistory } from "react-router";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import { Copyright } from "@material-ui/icons";
 import {
@@ -15,19 +17,28 @@ import {
 import { Box } from "@mui/system";
 
 import { ROUTES } from "../../constants/routes";
+import { addUser } from "./signUpSlice";
 
 export default function SignUp() {
+  const dispatch = useDispatch();
+
+  const history = useHistory();
+
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
-    console.log({
-      firstName: data.get("firstName"),
-      lastName: data.get("lastName"),
-      email: data.get("email"),
-      password: data.get("password"),
-    });
-    console.log(data);
+
+    dispatch(
+      addUser({
+        firstName: data.get("firstName"),
+        lastName: data.get("lastName"),
+        email: data.get("email"),
+        password: data.get("password"),
+      })
+    );
+    alert("You have successfully registered");
+    history.replace(ROUTES.login);
   };
 
   return (

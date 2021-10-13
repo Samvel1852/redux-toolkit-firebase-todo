@@ -39,9 +39,11 @@ export function getTodos() {
   });
 }
 
-export function addUserToFirebase({ userName, password }) {
+export function addUserToFirebase({ firstName, lastName, email, password }) {
   db.ref("/users/").push({
-    userName,
+    firstName,
+    lastName,
+    email,
     password,
   });
 }
